@@ -1,0 +1,84 @@
+CREATE DATABASE stock_selector_db;
+
+CREATE TABLE indices ( 
+    id SERIAL NOT NULL, 
+    name VARCHAR(100) NOT NULL, 
+    CONSTRAINT indices_id PRIMARY KEY (id) 
+);
+
+CREATE TABLE companies (
+    id SERIAL NOT NULL,
+	name VARCHAR (100) NOT NULL,
+	"total market value" INT8,
+    "shares outstanding" INT8,
+    last_update DATE NOT NULL,
+    CONSTRAINT companies_id PRIMARY KEY (id)	
+);
+
+CREATE TABLE shares (
+    id SERIAL NOT NULL,
+	ticker VARCHAR(20) NOT NULL,
+	PE FLOAT4,
+	EPS FLOAT4,
+	"book value" FLOAT4,
+	exchange VARCHAR(50),
+	price FLOAT4,
+	"date" DATE NOT NULL,
+	companies_id INT2,
+	CONSTRAINT shares_id PRIMARY KEY (id),
+	CONSTRAINT shares_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)
+ );
+
+CREATE TABLE incomes (
+    id SERIAL NOT NULL,
+	"net income" INT8,
+	"date" DATE NOT NULL,
+	companies_id INT2,
+	CONSTRAINT incomes_id PRIMARY KEY (id),
+	CONSTRAINT incomes_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)
+);
+
+CREATE TABLE dividends (
+    id SERIAL NOT NULL,
+	"trailing rate" FLOAT4,
+	"forward rate" FLOAT4,
+	"trailing yield" FLOAT4,
+    "forward yield" FLOAT4,
+    "date" DATE NOT NULL,
+    companies_id INT2,
+    CONSTRAINT dividends_id PRIMARY KEY (id),
+    CONSTRAINT dividends_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)	
+);
+
+CREATE TABLE debt (
+    id SERIAL NOT NULL,
+	"total debt" INT8,
+	"debt/equity ratio" FLOAT4,
+	"current ratio" FLOAT4,
+	"date" DATE NOT NULL,
+	companies_id INT2,
+	CONSTRAINT debt_id PRIMARY KEY (id),
+	CONSTRAINT debt_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)
+);
+
+CREATE TABLE balance_sheets (
+    id SERIAL NOT NULL,
+	"current assets" INT8,
+	"tangible assets" INT8,
+	"total assets" INT8,
+	"current liabilities" INT8,
+	"total liabilities" INT8,
+	"total equity" INT8,
+	"date" DATE NOT NULL,
+	companies_id INT2,
+	CONSTRAINT balance_sheets_id PRIMARY KEY (id),
+	CONSTRAINT balance_sheets_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)
+);
+
+CREATE TABLE indices_companies (
+    indices_id INT2,
+	companies_id INT2,
+	CONSTRAINT indices_companies_id PRIMARY KEY (indices_id, companies_id),
+	CONSTRAINT indices_companies_indices_id FOREIGN KEY (indices_id) REFERENCES indices(id),
+	CONSTRAINT indices_companies_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)
+);
