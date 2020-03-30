@@ -15,11 +15,11 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 ## insert data
-index = input("what is the index you want to register:\n")
+name = input("what is the index you want to register:\n")
 
 cur.execute ('''
 INSERT INTO indices (name) VALUES (%s);
-''', (index,))
+''', (name,))
 
 ## save the data in the database
 conn.commit()
