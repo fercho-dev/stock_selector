@@ -15,15 +15,19 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 ## insert data
-name = input("what is the company you want to register:\n")
-shares = input("shares outstanding:\n")
-value = input("total assets\n")
+name = input("what company you want to register:\n")
+shares = int(input("shares outstanding:\n"))
+value = int(input("total assets:\n"))
 update = input("date of the balance sheet you get the total assets from (yyyy/mm/dd):\n")
 
-cur.execute ('''
-INSERT INTO companies (name, "total market value", "shares outstanding", last_update) VALUES (%s, %s, %s, %s);
-''', (name, int(value), int(shares), update,))
-
+if last_update == '':
+    cur.execute ('''
+    INSERT INTO companies (name, "total market value", "shares outstanding") VALUES (%s, %s, %s);
+    ''', (name, value, shares,))
+else:
+    cur.execute ('''
+    INSERT INTO companies (name, "total market value", "shares outstanding", last_update) VALUES (%s, %s, %s, %s);
+    ''', (name, value, shares, update,))
 
 ## save the data in the database
 conn.commit()

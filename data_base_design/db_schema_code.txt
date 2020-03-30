@@ -11,7 +11,7 @@ CREATE TABLE companies (
 	name VARCHAR (100) NOT NULL,
 	"total market value" INT8,
     "shares outstanding" INT8,
-    last_update DATE NOT NULL,
+    last_update DATE NOT NULL DEFAULT CURRENT_DATE,
     CONSTRAINT companies_id PRIMARY KEY (id)	
 );
 
@@ -23,7 +23,7 @@ CREATE TABLE shares (
 	"book value" FLOAT4,
 	exchange VARCHAR(50),
 	price FLOAT4,
-	"date" DATE NOT NULL,
+	"date" DATE NOT NULL DEFAULT CURRENT_DATE,
 	companies_id INT2 NOT NULL,
 	CONSTRAINT shares_id PRIMARY KEY (id),
 	CONSTRAINT shares_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)
@@ -32,7 +32,7 @@ CREATE TABLE shares (
 CREATE TABLE incomes (
     id SERIAL NOT NULL,
 	"net income" INT8,
-	"date" DATE NOT NULL,
+	"date" DATE NOT NULL DEFAULT CURRENT_DATE,
 	companies_id INT2 NOT NULL,
 	CONSTRAINT incomes_id PRIMARY KEY (id),
 	CONSTRAINT incomes_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)
@@ -44,7 +44,7 @@ CREATE TABLE dividends (
 	"forward rate" FLOAT4,
 	"trailing yield" FLOAT4,
     "forward yield" FLOAT4,
-    "date" DATE NOT NULL,
+    "date" DATE NOT NULL DEFAULT CURRENT_DATE,
     companies_id INT2 NOT NULL,
     CONSTRAINT dividends_id PRIMARY KEY (id),
     CONSTRAINT dividends_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)	
@@ -55,7 +55,7 @@ CREATE TABLE debt (
 	"total debt" INT8,
 	"debt/equity ratio" FLOAT4,
 	"current ratio" FLOAT4,
-	"date" DATE NOT NULL,
+	"date" DATE NOT NULL DEFAULT CURRENT_DATE,
 	companies_id INT2 NOT NULL,
 	CONSTRAINT debt_id PRIMARY KEY (id),
 	CONSTRAINT debt_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)
@@ -69,7 +69,7 @@ CREATE TABLE balance_sheets (
 	"current liabilities" INT8,
 	"total liabilities" INT8,
 	"total equity" INT8,
-	"date" DATE NOT NULL,
+	"date" DATE NOT NULL DEFAULT CURRENT_DATE,
 	companies_id INT2 NOT NULL,
 	CONSTRAINT balance_sheets_id PRIMARY KEY (id),
 	CONSTRAINT balance_sheets_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)
