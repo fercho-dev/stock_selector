@@ -20,7 +20,7 @@ while True:
         company = input("what company do you want to register:\n")
         try:
             cur.execute('''
-            SELECT id FROM companies WHERE name = %s''', (company,))
+            SELECT id FROM companies WHERE "name" = %s''', (company,))
             companies_id = cur.fetchone()[0]
             break
         except TypeError:
@@ -51,12 +51,14 @@ while True:
     if answer == 'y':
         if date == '':
             cur.execute ('''
-            INSERT INTO shares (ticker, PE, EPS, "book value", exchange, price, companies_id) VALUES (%s, %s, %s, %s, %s, %s, %s);
+            INSERT INTO shares ("ticker", "PE", "EPS", "book value", "exchange", "price", companies_id) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s);
             ''', (ticker, pe, eps, book_value, exchange, price, companies_id,))
             break
         else:
             cur.execute ('''
-            INSERT INTO shares (ticker, PE, EPS, "book value", exchange, price, "date", companies_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+            INSERT INTO shares ("ticker", "PE", "EPS", "book value", "exchange", "price", "date", companies_id) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
             ''', (ticker, pe, eps, book_value, exchange, price, date, companies_id,))
             break
     else:

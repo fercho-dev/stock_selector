@@ -27,27 +27,31 @@ while True:
             print("the company is not in the companies table\n")
             continue
 
-    net_income = int(input("net income:\n"))
-    date = input("date of the income stament you get the net income from (yyyy/mm/dd):\n")
+    total_debt = int(input("total debt:\n"))
+    debt_equity = float(input("debt/equity ratio:\n"))
+    current_ratio = float(input("current ratio:\n"))
+    date = input("date (yyyy/mm/dd):\n")
     
     print(
         "are you sure you want to add these values to the database?\n",
         "company:",company,"\n",
-        "net income:",net_income,"\n",
-        "date:",date,"\n"
+        "total debt",total_debt,"\n",
+        "debt/equity ratio",debt_equity,"\n",
+        "current ratio",current_ratio,"\n",
+        "date:",date,"\n",
     )
     answer = input("(y/n)\n")
     
     if answer == 'y':
         if date == '':
             cur.execute ('''
-            INSERT INTO incomes ("net income", companies_id) VALUES (%s, %s);
-            ''', (net_income, companies_id,))
+            INSERT INTO debt ("total debt", "debt/equity ratio", "current ratio", companies_id) VALUES (%s, %s, %s, %s);
+            ''', (total_debt, debt_equity, current_ratio, companies_id,))
             break
         else:
             cur.execute ('''
-            INSERT INTO incomes ("net income", "date", companies_id) VALUES (%s, %s, %s);
-            ''', (net_income, date, companies_id,))
+            INSERT INTO debt ("total debt", "debt/equity ratio", "current ratio", "date", companies_id) VALUES (%s, %s, %s, %s, %s);
+            ''', (total_debt, debt_equity, current_ratio, date, companies_id,))
             break
     else:
         continue

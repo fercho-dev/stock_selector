@@ -27,28 +27,27 @@ while True:
             print("the company is not in the companies table\n")
             continue
 
-    net_income = int(input("net income:\n"))
-    date = input("date of the income stament you get the net income from (yyyy/mm/dd):\n")
+    while True:
+        index = input("to which index do you want to add the company:\n")
+        try:
+            cur.execute('''
+            SELECT id FROM indices WHERE "name" = %s''', (index,))
+            indices_id = cur.fetchone()[0]
+            break
+        except TypeError:
+            print("the index is not in the indices table\n")
+            continue
+
     
-    print(
-        "are you sure you want to add these values to the database?\n",
-        "company:",company,"\n",
-        "net income:",net_income,"\n",
-        "date:",date,"\n"
-    )
+    print("are you sure you want to add", company, "into", index)
     answer = input("(y/n)\n")
     
     if answer == 'y':
-        if date == '':
-            cur.execute ('''
-            INSERT INTO incomes ("net income", companies_id) VALUES (%s, %s);
-            ''', (net_income, companies_id,))
-            break
-        else:
-            cur.execute ('''
-            INSERT INTO incomes ("net income", "date", companies_id) VALUES (%s, %s, %s);
-            ''', (net_income, date, companies_id,))
-            break
+        cur.execute ('''
+        INSERT INTO indices_companies (indices_id, companies_id) 
+        VALUES (%s, %s);
+        ''', (indices_id, companies_id,))
+        break
     else:
         continue
 

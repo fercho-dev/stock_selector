@@ -27,27 +27,33 @@ while True:
             print("the company is not in the companies table\n")
             continue
 
-    net_income = int(input("net income:\n"))
-    date = input("date of the income stament you get the net income from (yyyy/mm/dd):\n")
+    trailing_rate = float(input("trailing rate:\n"))
+    forward_rate = float(input("forward rate:\n"))
+    trailing_yield = float(input("trailing yield:\n"))
+    forward_yield = float(input("forward yield:\n"))
+    date = input("date (yyyy/mm/dd):\n")
     
     print(
         "are you sure you want to add these values to the database?\n",
         "company:",company,"\n",
-        "net income:",net_income,"\n",
-        "date:",date,"\n"
+        "trailing rate",trailing_rate,"\n",
+	    "forward rate",forward_rate,"\n",
+	    "trailing yield",trailing_yield,"\n",
+        "forward yield",forward_yield,"\n",
+        "date:",date,"\n",
     )
     answer = input("(y/n)\n")
     
     if answer == 'y':
         if date == '':
             cur.execute ('''
-            INSERT INTO incomes ("net income", companies_id) VALUES (%s, %s);
-            ''', (net_income, companies_id,))
+            INSERT INTO dividends ("trailing rate", "forward rate", "trailing yield", "forward yield", companies_id) VALUES (%s, %s, %s, %s, %s);
+            ''', (trailing_rate, forward_rate, trailing_yield, forward_yield, companies_id,))
             break
         else:
             cur.execute ('''
-            INSERT INTO incomes ("net income", "date", companies_id) VALUES (%s, %s, %s);
-            ''', (net_income, date, companies_id,))
+            INSERT INTO dividends ("trailing rate", "forward rate", "trailing yield", "forward yield", "date", companies_id) VALUES (%s, %s, %s, %s, %s, %s);
+            ''', (trailing_rate, forward_rate, trailing_yield, forward_yield, date, companies_id,))
             break
     else:
         continue

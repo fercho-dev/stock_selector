@@ -30,12 +30,12 @@ while True:
     if answer == 'y':
         if update == '':
             cur.execute ('''
-            INSERT INTO companies (name, "total market value", "shares outstanding") VALUES (%s, %s, %s);
+            INSERT INTO companies ("name", "total market value", "shares outstanding") VALUES (%s, %s, %s);
             ''', (name, value, shares,))
             break
         else:
             cur.execute ('''
-            INSERT INTO companies (name, "total market value", "shares outstanding", last_update) VALUES (%s, %s, %s, %s);
+            INSERT INTO companies ("name", "total market value", "shares outstanding", "last_update") VALUES (%s, %s, %s, %s);
             ''', (name, value, shares, update,))
             break
     else:

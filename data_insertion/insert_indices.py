@@ -23,7 +23,7 @@ while True:
 
     if answer == 'y':
         cur.execute ('''
-        INSERT INTO indices (name) VALUES (%s);
+        INSERT INTO indices ("name") VALUES (%s);
         ''', (name,))
         break
     else:
