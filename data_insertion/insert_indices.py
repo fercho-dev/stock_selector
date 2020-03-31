@@ -15,11 +15,19 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 ## insert data
-name = input("what index do you want to register?\n")
+while True:
+    name = input("what index do you want to register?\n")
 
-cur.execute ('''
-INSERT INTO indices (name) VALUES (%s);
-''', (name,))
+    print("are you sure you want to add this index to the database\n",name)
+    answer = input("(y/n)\n")
+
+    if answer == 'y':
+        cur.execute ('''
+        INSERT INTO indices (name) VALUES (%s);
+        ''', (name,))
+        break
+    else:
+        continue
 
 ## save the data in the database
 conn.commit()
