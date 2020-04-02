@@ -2,7 +2,7 @@ import psycopg2
 
 ## connect to the db
 host = "localhost"
-db = "conection_test"
+db = "stock_selector_db"
 user = "postgres"
 pw = "123"
 
@@ -16,13 +16,23 @@ cur = conn.cursor()
 
 ## insert data
 while True:
-    name = input("what company you want to register:\n")
+    company = input("what company you want to register:\n")
+
+    cur.execute('''
+        SELECT "name" FROM companies WHERE "name" = %s''', (company,))
+    try:
+        duplicate = cur.fetchone()[0]
+        print("this company is already on the database")
+        continue
+    except TypeError:
+        pass
+
     shares = int(input("shares outstanding:\n"))
-    value = int(input("total assets:\n"))
-    update = input("date of the balance sheet you get the total assets from (yyyy/mm/dd):\n")
+    value = float(input("price:\n")) * shares
+    update = input("date (yyyy/mm/dd):\n")
     
     print("are you sure you want to add these values to the database?\n",
-    "company:",name,"\n",
+    "company:",company,"\n",
     "shares outstanding",shares,"\n",
     "market value:",value,"\n")
     answer = input("(y/n)\n")
@@ -31,12 +41,12 @@ while True:
         if update == '':
             cur.execute ('''
             INSERT INTO companies ("name", "total market value", "shares outstanding") VALUES (%s, %s, %s);
-            ''', (name, value, shares,))
+            ''', (company, value, shares,))
             break
         else:
             cur.execute ('''
             INSERT INTO companies ("name", "total market value", "shares outstanding", "last_update") VALUES (%s, %s, %s, %s);
-            ''', (name, value, shares, update,))
+            ''', (company, value, shares, update,))
             break
     else:
         continue

@@ -2,7 +2,7 @@ import psycopg2
 
 ## connect to the db
 host = "localhost"
-db = "conection_test"
+db = "stock_selector_db"
 user = "postgres"
 pw = "123"
 

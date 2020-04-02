@@ -2,7 +2,7 @@ import psycopg2
 
 ## connect to the db
 host = "localhost"
-db = "conection_test"
+db = "stock_selector_db"
 user = "postgres"
 pw = "123"
 
@@ -16,15 +16,24 @@ cur = conn.cursor()
 
 ## insert data
 while True:
-    name = input("what index do you want to register?\n")
+    index = input("what index do you want to register?\n")
 
-    print("are you sure you want to add this index to the database\n",name)
+    cur.execute('''
+    SELECT "name" FROM indices WHERE "name" = %s''', (index,))
+    try:
+        duplicate = cur.fetchone()[0]
+        print("this index is already on the database")
+        continue
+    except TypeError:
+        pass
+
+    print("are you sure you want to add this index to the database\n",index)
     answer = input("(y/n)\n")
 
     if answer == 'y':
         cur.execute ('''
         INSERT INTO indices ("name") VALUES (%s);
-        ''', (name,))
+        ''', (index,))
         break
     else:
         continue
