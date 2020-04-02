@@ -31,6 +31,7 @@ while True:
     forward_rate = float(input("forward rate:\n"))
     trailing_yield = float(input("trailing yield:\n"))
     forward_yield = float(input("forward yield:\n"))
+    average = float(input("5 year average yield:\n"))
     date = input("date (yyyy/mm/dd):\n")
     
     print(
@@ -40,6 +41,7 @@ while True:
 	    "forward rate",forward_rate,"\n",
 	    "trailing yield",trailing_yield,"\n",
         "forward yield",forward_yield,"\n",
+        "5 year average yield",average,"\n"
         "date:",date,"\n",
     )
     answer = input("(y/n)\n")
@@ -47,13 +49,13 @@ while True:
     if answer == 'y':
         if date == '':
             cur.execute ('''
-            INSERT INTO dividends ("trailing rate", "forward rate", "trailing yield", "forward yield", companies_id) VALUES (%s, %s, %s, %s, %s);
-            ''', (trailing_rate, forward_rate, trailing_yield, forward_yield, companies_id,))
+            INSERT INTO dividends ("trailing rate", "forward rate", "trailing yield", "forward yield", "5 year average yield", companies_id) VALUES (%s, %s, %s, %s, %s, %s);
+            ''', (trailing_rate, forward_rate, trailing_yield, forward_yield, average, companies_id,))
             break
         else:
             cur.execute ('''
-            INSERT INTO dividends ("trailing rate", "forward rate", "trailing yield", "forward yield", "date", companies_id) VALUES (%s, %s, %s, %s, %s, %s);
-            ''', (trailing_rate, forward_rate, trailing_yield, forward_yield, date, companies_id,))
+            INSERT INTO dividends ("trailing rate", "forward rate", "trailing yield", "forward yield", "5 year average yield" "date", companies_id) VALUES (%s, %s, %s, %s, %s, %s, %s);
+            ''', (trailing_rate, forward_rate, trailing_yield, forward_yield, average, date, companies_id,))
             break
     else:
         continue

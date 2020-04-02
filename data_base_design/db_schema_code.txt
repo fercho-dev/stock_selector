@@ -44,6 +44,7 @@ CREATE TABLE dividends (
 	"forward rate" FLOAT4,
 	"trailing yield" FLOAT4,
     "forward yield" FLOAT4,
+    "5 year average yield" FLOAT4,
     "date" DATE NOT NULL DEFAULT CURRENT_DATE,
     companies_id INT2 NOT NULL,
     CONSTRAINT dividends_id PRIMARY KEY (id),

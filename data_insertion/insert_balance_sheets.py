@@ -28,7 +28,10 @@ while True:
             continue
 
     current_assets = int(input("current assets:\n"))
-    tangible_assets = int(input("tangible assets:\n"))
+    try:
+        tangible_assets = int(input("tangible assets:\n"))
+    except ValueError:
+        tangible_assets = None
     total_assets = int(input("total assets:\n"))
     current_lia = int(input("current liabilities:\n"))
     total_lia = int(input("total liabilities:\n"))
