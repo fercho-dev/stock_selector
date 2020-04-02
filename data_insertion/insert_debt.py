@@ -29,7 +29,10 @@ while True:
 
     total_debt = int(input("total debt:\n"))
     debt_equity = float(input("debt/equity ratio:\n"))
-    current_ratio = float(input("current ratio:\n"))
+    try:
+        current_ratio = float(input("current ratio:\n"))
+    except ValueError:
+        current_ratio = None
     date = input("date (yyyy/mm/dd):\n")
     
     print(

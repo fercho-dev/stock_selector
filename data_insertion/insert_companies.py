@@ -28,7 +28,10 @@ while True:
         pass
 
     shares = int(input("shares outstanding:\n"))
-    value = float(input("price:\n")) * shares
+    try:
+        value = float(input("market cap:\n"))
+    except ValueError:
+        value = float(input("price:\n")) * shares
     update = input("date (yyyy/mm/dd):\n")
     
     print("are you sure you want to add these values to the database?\n",
