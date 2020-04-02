@@ -16,7 +16,7 @@ cur = conn.cursor()
 
 ## insert data
 while True:
-    company = input("what company you want to register:\n")
+    company = input("what company do you want to register:\n")
 
     cur.execute('''
         SELECT "name" FROM companies WHERE "name" = %s''', (company,))
