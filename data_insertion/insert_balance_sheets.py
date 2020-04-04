@@ -48,12 +48,13 @@ while True:
     except ValueError:
         total_lia = None
     try:   
-        total_equity = int(input("total equity:\n"))
-    except ValueError:
-        if total_assets or total_lia == None:
+        total_equity = total_assets - total_lia
+    except TypeError:
+        try:
+            total_equity = int(input("total equity:\n"))
+        except ValueError:
             total_equity = None
-        else:
-            total_equity = total_assets - total_lia
+
     date = input("date of the balance sheet(yyyy/mm/dd):\n")
     
     print(
