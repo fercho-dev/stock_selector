@@ -30,7 +30,7 @@ while True:
         total_debt = int(input("total debt:\n"))
     except ValueError:
         total_debt = None 
-    if total_debt != None      
+    if total_debt != None:      
         try:
             equity = float(input("total equity:\n"))
             debt_equity = total_debt / equity 
