@@ -1,6 +1,4 @@
 import psycopg2
-import json
-import urllib.request, urllib.parse, urllib.error
 
 ## connect to the db
 host = "192.168.0.9"
@@ -31,9 +29,9 @@ while True:
 
     shares = int(input("shares outstanding:\n"))
     try:
-        value = float(input("market cap:\n"))
+        value = int(input("market cap:\n"))
     except ValueError:
-        value = float(input("price:\n")) * shares
+        value = int(input("price:\n")) * shares
     update = input("date (yyyy/mm/dd):\n")
     
     print("are you sure you want to add these values to the database?\n",

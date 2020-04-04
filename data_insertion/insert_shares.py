@@ -31,7 +31,7 @@ while True:
     try:
         income = float(input("net income:\n"))
         shares = float(input("shares outstanding\n"))
-        eps = income / shares
+        eps = round(income / shares, 2)
     except ValueError: 
         try:    
             eps = float(input("EPS ratio:\n"))
@@ -39,7 +39,7 @@ while True:
             eps = None
     price = float(input("price:\n"))
     try:
-        pe = price / eps
+        pe = round(price / eps, 2)
     except TypeError:
         try:
             pe = float(input("PE ratio:\n"))
@@ -47,7 +47,7 @@ while True:
             pe = None    
     try:
         equity = float(input("total equity:\n"))
-        book_value = equity / shares
+        book_value = round(equity / shares, 2)
     except:    
         book_value = float(input("book value:\n"))
     exchange = input("exchange:\n")

@@ -33,7 +33,7 @@ while True:
     if total_debt != None:      
         try:
             equity = float(input("total equity:\n"))
-            debt_equity = total_debt / equity 
+            debt_equity = round(total_debt / equity, 2) 
         except ValueError:
             try:
                 debt_equity = float(input("debt/equity ratio:\n"))
@@ -42,7 +42,7 @@ while True:
     try:
         current_assets = float(input("current assets:\n"))
         current_lia = float(input("current liabilities:\n"))
-        current_ratio = current_assets / current_lia
+        current_ratio = round(current_assets / current_lia, 2)
     except ValueError:
         try:
             current_ratio = float(input("current ratio:\n"))
