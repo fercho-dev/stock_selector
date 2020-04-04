@@ -124,7 +124,6 @@ if answer == 'y':
             total_lia = None
         try:   
             total_equity = int(input("total equity:\n"))
-            total_equity = total_assets - total_lia
         except ValueError:
             try:
                 total_equity = total_assets - total_lia
