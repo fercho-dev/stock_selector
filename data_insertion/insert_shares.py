@@ -30,7 +30,7 @@ while True:
     ticker = input("ticker:\n")
     try:
         income = float(input("net income:\n"))
-        shares = float(input("shares outstanding"))
+        shares = float(input("shares outstanding\n"))
         eps = income / shares
     except ValueError: 
         try:    
