@@ -1,7 +1,7 @@
 import psycopg2
 
 ## connect to the db
-host = "localhost"
+host = "192.168.0.9"
 db = "stock_selector_db"
 user = "postgres"
 pw = "123"
@@ -28,11 +28,29 @@ while True:
             continue
 
     ticker = input("ticker:\n")
-    pe = float(input("PE ratio:\n"))
-    eps = float(input("EPS ratio:\n"))
-    book_value = float(input("book value:\n"))
-    exchange = input("exchange:\n")
+    try:
+        income = float(input("net income:\n"))
+        shares = float(input("shares outstanding"))
+        eps = income / shares
+    except ValueError: 
+        try:    
+            eps = float(input("EPS ratio:\n"))
+        except ValueError:
+            eps = None
     price = float(input("price:\n"))
+    try:
+        pe = price / eps
+    except TypeError:
+        try:
+            pe = float(input("PE ratio:\n"))
+        except ValueError:
+            pe = None    
+    try:
+        equity = float(input("total equity:\n"))
+        book_value = equity / shares
+    except:    
+        book_value = float(input("book value:\n"))
+    exchange = input("exchange:\n")
     date = input("date (yyyy/mm/dd):\n")
     
     print(

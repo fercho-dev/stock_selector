@@ -1,7 +1,7 @@
 import psycopg2
 
 ## connect to the db
-host = "localhost"
+host = "192.168.0.9"
 db = "stock_selector_db"
 user = "postgres"
 pw = "123"
@@ -26,14 +26,30 @@ while True:
         except TypeError:
             print("the company is not in the companies table\n")
             continue
-
-    total_debt = int(input("total debt:\n"))
-    debt_equity = float(input("debt/equity ratio:\n"))
     try:
-        current_ratio = float(input("current ratio:\n"))
+        total_debt = int(input("total debt:\n"))
     except ValueError:
-        current_ratio = None
-    date = input("date (yyyy/mm/dd):\n")
+        total_debt = None 
+    if total_debt != None      
+        try:
+            equity = float(input("total equity:\n"))
+            debt_equity = total_debt / equity 
+        except ValueError:
+            pass
+    try:
+        debt_equity = float(input("debt/equity ratio:\n"))
+    except ValueError:
+        debt_equity = None
+    try:
+        current_assets = float(input("current assets:\n"))
+        current_lia = float(input("current liabilities:\n"))
+        current_ratio = current_assets / current_lia
+    except ValueError:
+        try:
+            current_ratio = float(input("current ratio:\n"))
+        except ValueError:
+            current_ratio = None    
+    date = input("date of the balance sheet you get the assets, liabilities and equity from (yyyy/mm/dd):\n")
     
     print(
         "are you sure you want to add these values to the database?\n",

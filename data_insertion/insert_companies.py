@@ -1,7 +1,9 @@
 import psycopg2
+import json
+import urllib.request, urllib.parse, urllib.error
 
 ## connect to the db
-host = "localhost"
+host = "192.168.0.9"
 db = "stock_selector_db"
 user = "postgres"
 pw = "123"

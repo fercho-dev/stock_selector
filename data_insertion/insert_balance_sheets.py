@@ -1,7 +1,7 @@
 import psycopg2
 
 ## connect to the db
-host = "localhost"
+host = "192.168.0.9"
 db = "stock_selector_db"
 user = "postgres"
 pw = "123"
@@ -35,13 +35,25 @@ while True:
         tangible_assets = int(input("tangible assets:\n"))
     except ValueError:
         tangible_assets = None
-    total_assets = int(input("total assets:\n"))
+    try:
+        total_assets = int(input("total assets:\n"))
+    except ValueError:
+        total_assets = None
     try:
         current_lia = int(input("current liabilities:\n"))
     except ValueError:
         current_lia = None
-    total_lia = int(input("total liabilities:\n"))
-    total_equity = int(input("total equity:\n"))
+    try:
+        total_lia = int(input("total liabilities:\n"))
+    except ValueError:
+        total_lia = None
+    try:   
+        total_equity = int(input("total equity:\n"))
+    except ValueError:
+        if total_assets or total_lia == None:
+            total_equity = None
+        else:
+            total_equity = total_assets - total_lia
     date = input("date of the balance sheet(yyyy/mm/dd):\n")
     
     print(
