@@ -221,7 +221,7 @@ if answer == 'y':
     conn.commit()
     print("debt inserted\n")
 else:
-    print("debt not inserted")
+    print("debt not inserted\n")
 
 ## insert shares
 answer = input("do you want to register a share?\n(y/n)\n")
@@ -284,9 +284,9 @@ if answer == 'y':
 
     ## save the data in the database
     conn.commit()
-    print("share inserted")
+    print("share inserted\n")
 else:
-    print("share not inserted")
+    print("share not inserted\n")
 
 ## insert dividends
 answer = input("do you want to register dividends?\n(y/n)\n")
@@ -327,9 +327,9 @@ if answer == 'y':
 
     ## save the data in the database
     conn.commit()
-    print("dividends inserted")
+    print("dividends inserted\n")
 else:
-    print("dividends not inserted")
+    print("dividends not inserted\n")
 
 ## close the connection
 cur.close()
