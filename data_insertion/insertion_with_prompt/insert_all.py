@@ -1,7 +1,7 @@
 import psycopg2
 
 ## connect to the db
-host = "192.168.0.9"
+host = "localhost"
 db = "stock_selector_db"
 user = "postgres"
 pw = "123"
@@ -17,10 +17,9 @@ cur = conn.cursor()
 ## insert companies
 while True:
     company = input("what company do you want to register:\n")
-
-    cur.execute('''
-        SELECT "name" FROM companies WHERE "name" = %s''', (company,))
     try:
+        cur.execute('''
+        SELECT "name" FROM companies WHERE "name" = %s''', (company,))
         duplicate = cur.fetchone()[0]
         print("this company is already on the database")
         break
