@@ -47,7 +47,7 @@ while True:
             break
         else:
             cur.execute ('''
-            INSERT INTO companies ("name", "total market value", "shares outstanding", "last_update") VALUES (%s, %s, %s, %s);
+            INSERT INTO companies ("name", "total market value", "shares outstanding", "last update") VALUES (%s, %s, %s, %s);
             ''', (company, value, shares, update,))
             break
     else:
