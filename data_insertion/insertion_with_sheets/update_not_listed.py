@@ -37,13 +37,14 @@ def update(spreadsheet_id,range_):
             duplicates.append(item[0])
     
     ## here we clear from the sheet the duplicate companies
-    clear_values_request_body = {}
-    sheet = service.spreadsheets()
-    for item in duplicates:
-        row  = ticker_row[item]
-        rango = create_range(range_, row)
-        request = sheet.values().clear(spreadsheetId=spreadsheet_id, range=rango, body=clear_values_request_body)
-        response = request.execute()
+    if len(duplicates) > 0:
+        clear_values_request_body = {}
+        sheet = service.spreadsheets()
+        for item in duplicates:
+            row  = ticker_row[item]
+            rango = create_range(range_, row)
+            request = sheet.values().clear(spreadsheetId=spreadsheet_id, range=rango, body=clear_values_request_body)
+            response = request.execute()
 
 ## this function creates the range in A1 notation that we want to clear
 def create_range(ws,row):
@@ -53,4 +54,7 @@ def create_range(ws,row):
 
 if __name__ == '__main__':
     update('1-HrOewpbw18vLR1FQP6gIiiz93xGEIQp8S0zz_s8PqE','hoja 1')
+    update('19bPfrz5HjDYpfVwbMtNi1I47qSgVaGkkZ4UcZLKbCpE','hoja 1')
+    update('1bgAaxpni_rFz9sZgojDXODe7pNFlUzAhdtLWTLmhgrk','hoja 1')
+    update('1R0h3A6cmfqbCV7788cLK3DdyRirREs8KbHxppulbf98','hoja 1')
     
