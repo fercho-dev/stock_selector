@@ -1,5 +1,20 @@
 from oauth2client.service_account import ServiceAccountCredentials
 from googleapiclient import discovery
+import psycopg2
+
+## connect to the db
+host = "localhost"
+db = "stock_selector_db"
+user = "postgres"
+pw = "123"
+
+conn = psycopg2.connect(
+    host = host,
+    database = db,
+    user = user,
+    password = pw)
+
+cur = conn.cursor()
 
 while True:
     ## getting the variables
@@ -25,7 +40,7 @@ while True:
         company_in_db = cur.fetchone()[0]
         print(f'\nticker {ticker} is related to company {company_in_db}')
         continue
-    except TypeError:
+    except:
         pass
     try:
         net_income = int(input("net income:\n"))
@@ -71,11 +86,26 @@ while True:
         total_debt = None
     price = float(input("price:\n"))
     exchange = input("exchange:\n").lower()
-    trailing_rate = float(input("trailing rate:\n"))
-    forward_rate = float(input("forward rate:\n"))
-    trailing_yield = float(input("trailing yield:\n"))
-    forward_yield = float(input("forward yield:\n"))
-    average = float(input("5 year average yield:\n"))
+    try:
+        trailing_rate = float(input("trailing rate:\n"))
+    except:
+        trailing_rate = None
+    try:
+        forward_rate = float(input("forward rate:\n"))
+    except:
+        forward_rate = None
+    try:
+        trailing_yield = float(input("trailing yield:\n"))
+    except:
+        trailing_yield = None
+    try:
+        forward_yield = float(input("forward yield:\n"))
+    except:
+        forward_yield = None
+    try:
+        average = float(input("5 year average yield:\n"))
+    except:
+        average = None
     current_date = input("date (yyyy/mm/dd):\n")
     price_currency = input("price currency:\n").lower()
     financials_currency = input("financial currency:\n").lower()
@@ -110,3 +140,7 @@ while True:
 
     print(company,"added to upcoming additions")
     break
+
+## close the connection to the database
+cur.close()
+conn.close()

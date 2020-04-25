@@ -51,7 +51,7 @@ def insert_to_db(spreadsheet_id,range_):
             company_in_db = cur.fetchone()[0]
             print(f'\nticker {ticker} is related to the company {company_in_db}')
             continue
-        except TypeError:
+        except:
             pass
         try:
             net_income = int(item[1])
