@@ -12,6 +12,7 @@ CREATE TABLE companies (
 	"total market value" INT8,
     "shares outstanding" INT8,
     "last update" DATE NOT NULL DEFAULT CURRENT_DATE,
+    "currency" VARCHAR(5),
     CONSTRAINT companies_id PRIMARY KEY (id)	
 );
 
@@ -25,6 +26,7 @@ CREATE TABLE shares (
 	"price" FLOAT4,
 	"date" DATE NOT NULL DEFAULT CURRENT_DATE,
 	companies_id INT2 NOT NULL,
+	"currency" VARCHAR(5),
 	CONSTRAINT shares_id PRIMARY KEY (id),
 	CONSTRAINT shares_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)
  );
@@ -34,6 +36,7 @@ CREATE TABLE incomes (
 	"net income" INT8,
 	"date" DATE NOT NULL DEFAULT CURRENT_DATE,
 	companies_id INT2 NOT NULL,
+	"currency" VARCHAR(5),
 	CONSTRAINT incomes_id PRIMARY KEY (id),
 	CONSTRAINT incomes_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)
 );
@@ -58,6 +61,7 @@ CREATE TABLE debt (
 	"current ratio" FLOAT4,
 	"date" DATE NOT NULL DEFAULT CURRENT_DATE,
 	companies_id INT2 NOT NULL,
+	"currency" VARCHAR(5),
 	CONSTRAINT debt_id PRIMARY KEY (id),
 	CONSTRAINT debt_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)
 );
@@ -72,6 +76,7 @@ CREATE TABLE balance_sheets (
 	"total equity" INT8,
 	"date" DATE NOT NULL DEFAULT CURRENT_DATE,
 	companies_id INT2 NOT NULL,
+	"currency" VARCHAR(5),
 	CONSTRAINT balance_sheets_id PRIMARY KEY (id),
 	CONSTRAINT balance_sheets_companies_id FOREIGN KEY (companies_id) REFERENCES companies(id)
 );

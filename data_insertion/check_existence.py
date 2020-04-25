@@ -15,8 +15,9 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 ## checking existence
-company = input("what company do you want to check if it's in the database?\n")
-ticker = input("what's the ticker of the company?\n")
+company = input("what company do you want to check if it's in the database?\n").lower()
+ticker = input("what's the ticker of the company?\n").lower()
+
 try:
     cur.execute('''
     SELECT "name" FROM companies WHERE "name" = %s''', (company,))
@@ -36,9 +37,6 @@ except TypeError:
         print(f'\nticker {ticker} is related to the company {company}')
     except:
         print("\nthat ticker is not related to any company in the database")
-
-
-## save the data in the database
 
 
 ## close the connection

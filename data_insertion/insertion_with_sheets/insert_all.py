@@ -23,12 +23,33 @@ def insert_to_db(spreadsheet_id,range_):
         if index == 0:
             index += 1
             continue
-        company = item[0]
+        try:    
+            company = item[0].lower()
+        except:
+            company = None
+        try:
+            ticker = item[13].lower()
+        except:
+            ticker = None
+        ## checking if company already exists in database 
         try:
             cur.execute('''
             SELECT "name" FROM companies WHERE "name" = %s''', (company,))
             duplicate = cur.fetchone()[0]
             print(company, "is already on the database")
+            continue
+        except TypeError:
+            pass
+        try:
+            cur.execute('''
+            SELECT "ticker", companies_id FROM shares WHERE "ticker" = %s''', (ticker,))
+            info = cur.fetchall()[0]
+            ticker_duplicate = info[0]
+            companies_id = info[1]
+            cur.execute('''
+            SELECT "name" FROM companies WHERE id = %s''', (companies_id,))
+            company_in_db = cur.fetchone()[0]
+            print(f'\nticker {ticker} is related to the company {company_in_db}')
             continue
         except TypeError:
             pass
@@ -81,15 +102,11 @@ def insert_to_db(spreadsheet_id,range_):
         except:
             total_debt = None
         try:
-            ticker = item[13]
-        except:
-            ticker = None
-        try:
             price = float(item[14])
         except:
             price = None
         try:
-            exchange = item[15]
+            exchange = item[15].lower()
         except:
             exchange = None
         try:
@@ -117,6 +134,14 @@ def insert_to_db(spreadsheet_id,range_):
         except:
             date = None
         try:
+            price_currency = item[22].lower()
+        except:
+            price_currency = None
+        try:
+            financials_currency = item[23].lower()
+        except:
+            financials_currency = None
+        try:
             debt_equity = round(total_debt / total_equity, 2) 
         except TypeError:
             debt_equity = None
@@ -140,12 +165,12 @@ def insert_to_db(spreadsheet_id,range_):
         ## insert companies
         if date == '':
             cur.execute ('''
-            INSERT INTO companies ("name", "total market value", "shares outstanding") VALUES (%s, %s, %s);
-            ''', (company, value, shares,))
+            INSERT INTO companies ("name", "total market value", "shares outstanding", "currency") VALUES (%s, %s, %s, %s);
+            ''', (company, value, shares, price_currency,))
         else:
             cur.execute ('''
-            INSERT INTO companies ("name", "total market value", "shares outstanding", "last update") VALUES (%s, %s, %s, %s);
-            ''', (company, value, shares, date,))
+            INSERT INTO companies ("name", "total market value", "shares outstanding", "last update", "currency") VALUES (%s, %s, %s, %s, %s);
+            ''', (company, value, shares, date, price_currency,))
 
         ## save the data in the database
         conn.commit()
@@ -161,12 +186,12 @@ def insert_to_db(spreadsheet_id,range_):
         ## insert incomes
         if income_date == '':
             cur.execute ('''
-            INSERT INTO incomes ("net income", companies_id) VALUES (%s, %s);
-            ''', (net_income, companies_id,))
+            INSERT INTO incomes ("net income", companies_id, "currency") VALUES (%s, %s, %s);
+            ''', (net_income, companies_id, financials_currency,))
         else:
             cur.execute ('''
-            INSERT INTO incomes ("net income", "date", companies_id) VALUES (%s, %s, %s);
-            ''', (net_income, income_date, companies_id,))
+            INSERT INTO incomes ("net income", "date", companies_id, "currency") VALUES (%s, %s, %s, %s);
+            ''', (net_income, income_date, companies_id, financials_currency,))
 
         ## save the data in the database
         conn.commit()    
@@ -175,15 +200,15 @@ def insert_to_db(spreadsheet_id,range_):
         if sheet_date == '':
             cur.execute ('''
             INSERT INTO balance_sheets ("current assets", "tangible assets", "total assets", 
-            "current liabilities", "total liabilities", "total equity", companies_id) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s);
-            ''', (current_assets, tangible_assets, total_assets, current_lia, total_lia, total_equity, companies_id,))
+            "current liabilities", "total liabilities", "total equity", companies_id, "currency") 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+            ''', (current_assets, tangible_assets, total_assets, current_lia, total_lia, total_equity, companies_id, financials_currency,))
         else:
             cur.execute ('''
             INSERT INTO balance_sheets ("current assets", "tangible assets", "total assets", 
-            "current liabilities", "total liabilities", "total equity", "date", companies_id) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
-            ''', (current_assets, tangible_assets, total_assets, current_lia, total_lia, total_equity, sheet_date, companies_id,))
+            "current liabilities", "total liabilities", "total equity", "date", companies_id, "currency") 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+            ''', (current_assets, tangible_assets, total_assets, current_lia, total_lia, total_equity, sheet_date, companies_id, financials_currency,))
         
         ## save the data in the database
         conn.commit()
@@ -191,13 +216,13 @@ def insert_to_db(spreadsheet_id,range_):
         ## insert debt
         if sheet_date == '':
             cur.execute ('''
-            INSERT INTO debt ("total debt", "debt/equity ratio", "current ratio", companies_id) VALUES (%s, %s, %s, %s);
-            ''', (total_debt, debt_equity, current_ratio, companies_id,))
+            INSERT INTO debt ("total debt", "debt/equity ratio", "current ratio", companies_id, "currency") VALUES (%s, %s, %s, %s, %s);
+            ''', (total_debt, debt_equity, current_ratio, companies_id, financials_currency,))
                     
         else:
             cur.execute ('''
-            INSERT INTO debt ("total debt", "debt/equity ratio", "current ratio", "date", companies_id) VALUES (%s, %s, %s, %s, %s);
-            ''', (total_debt, debt_equity, current_ratio, sheet_date, companies_id,))
+            INSERT INTO debt ("total debt", "debt/equity ratio", "current ratio", "date", companies_id, "currency") VALUES (%s, %s, %s, %s, %s, %s);
+            ''', (total_debt, debt_equity, current_ratio, sheet_date, companies_id, financials_currency,))
 
         ## save the data in the database
         conn.commit()
@@ -205,14 +230,14 @@ def insert_to_db(spreadsheet_id,range_):
         ## insert shares
         if date == '':
             cur.execute ('''
-            INSERT INTO shares ("ticker", "PE", "EPS", "book value", "exchange", "price", companies_id) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s);
-            ''', (ticker, pe, eps, book_value, exchange, price, companies_id,))
+            INSERT INTO shares ("ticker", "PE", "EPS", "book value", "exchange", "price", companies_id, "currency") 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+            ''', (ticker, pe, eps, book_value, exchange, price, companies_id, price_currency,))
         else:
             cur.execute ('''
-            INSERT INTO shares ("ticker", "PE", "EPS", "book value", "exchange", "price", "date", companies_id) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
-            ''', (ticker, pe, eps, book_value, exchange, price, date, companies_id,))
+            INSERT INTO shares ("ticker", "PE", "EPS", "book value", "exchange", "price", "date", companies_id, "currency") 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+            ''', (ticker, pe, eps, book_value, exchange, price, date, companies_id, price_currency,))
 
         ## save the data in the database
         conn.commit()
@@ -279,7 +304,7 @@ def clear_sheet_upcoming(spreadsheet_id,range_):
         ['company','net income','income stament date','current assets','tangible assets','total assets',
         'current liabilities','total liabilities','total equity','balance sheet date','shares outstanding',
         'market cap','total debt','ticker','price','exchange','forward rate','forward yield','trailing rate',
-        'trailing yield','5 year average','current date']
+        'trailing yield','5 year average','current date','price currency','financials currency']
     ]
     }
 
