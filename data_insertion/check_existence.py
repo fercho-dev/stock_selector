@@ -20,21 +20,18 @@ ticker = input("what's the ticker of the company?\n").lower()
 
 try:
     cur.execute('''
-    SELECT "name" FROM companies WHERE "name" = %s''', (company,))
+    SELECT "name" FROM companies WHERE "name" = %s ''', (company,))
     name = cur.fetchone()[0]
     print(f'\nthe company {name} is in the database')
 except TypeError:
     print("\nthat company name is not in the database")
     try:
         cur.execute('''
-        SELECT "ticker", companies_id FROM shares WHERE "ticker" = %s''', (ticker,))
+        SELECT s."ticker", c."name" FROM shares AS s JOIN companies AS c ON s.companies_id = c.id WHERE "ticker" = %s''', (ticker,))
         info = cur.fetchall()[0]
         ticker = info[0]
-        companies_id = info[1]
-        cur.execute('''
-        SELECT "name" FROM companies WHERE id = %s''', (companies_id,))
-        company = cur.fetchone()[0]
-        print(f'\nticker {ticker} is related to the company {company}')
+        company_in_db = info[1]
+        print(f'\nticker {ticker} is related to the company {company_in_db}')
     except:
         print("\nthat ticker is not related to any company in the database")
 
