@@ -320,7 +320,7 @@ def register_last_update(spreadsheet_id,range_):
         "range": tmp_range,
         "majorDimension": 'ROWS',
         "values": [
-        [date]
+        [null, null, date]
         ]
         }
         data = sheet.values().update(spreadsheetId=spreadsheet_id, range=tmp_range, valueInputOption=value_input_option, body=value_range_body)
@@ -328,7 +328,7 @@ def register_last_update(spreadsheet_id,range_):
 
 ## this function creates the range in A1 notation that we want to clear
 def create_range(ws,row):
-    rango = ws + '!' + 'C' + str(row)
+    rango = ws + '!' + 'A' + str(row) + ':' + 'C' + str(row)
     return rango
 
 
@@ -350,10 +350,11 @@ if __name__ == '__main__':
     cur = conn.cursor()
     
     ## insert the data
-    insert_to_db('13WhjYprLaLRhj1uhxfWGyv3lb0zRx_LmCtSJE-1SsQQ','updates')
+    update_db('13WhjYprLaLRhj1uhxfWGyv3lb0zRx_LmCtSJE-1SsQQ','updates')
 
     clear_sheet_updates('13WhjYprLaLRhj1uhxfWGyv3lb0zRx_LmCtSJE-1SsQQ', 'updates')
-    register_last_update('13WhjYprLaLRhj1uhxfWGyv3lb0zRx_LmCtSJE-1SsQQ', 'already inside')
+    ##la siguiente funcion aun no funciona bien
+    #register_last_update('13WhjYprLaLRhj1uhxfWGyv3lb0zRx_LmCtSJE-1SsQQ', 'already inside')
 
     ## close the connection to the database
     cur.close()
