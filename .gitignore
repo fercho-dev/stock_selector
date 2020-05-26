@@ -5,5 +5,4 @@ sheets_append.py
 sheets_clear.py
 sheets_read.py
 sheets_write.py
-add_upcoming_addition.ipynb
-add_updates.ipynb
+*.ipynb
