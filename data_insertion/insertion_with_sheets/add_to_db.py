@@ -181,14 +181,17 @@ def insert_to_db(spreadsheet_id,range_):
         companies_id = cur.fetchone()[0]
 
         ## insert incomes
-        if income_date == '':
-            cur.execute ('''
-            INSERT INTO incomes ("net income", companies_id, "currency") VALUES (%s, %s, %s);
-            ''', (net_income, companies_id, financials_currency,))
+        if net_income == None:
+            pass
         else:
-            cur.execute ('''
-            INSERT INTO incomes ("net income", "date", companies_id, "currency") VALUES (%s, %s, %s, %s);
-            ''', (net_income, income_date, companies_id, financials_currency,))
+            if income_date == '':
+                cur.execute ('''
+                INSERT INTO incomes ("net income", companies_id, "currency") VALUES (%s, %s, %s);
+                ''', (net_income, companies_id, financials_currency,))
+            else:
+                cur.execute ('''
+                INSERT INTO incomes ("net income", "date", companies_id, "currency") VALUES (%s, %s, %s, %s);
+                ''', (net_income, income_date, companies_id, financials_currency,))
 
         ## save the data in the database
         conn.commit()    
@@ -211,44 +214,53 @@ def insert_to_db(spreadsheet_id,range_):
         conn.commit()
 
         ## insert debt
-        if sheet_date == '':
-            cur.execute ('''
-            INSERT INTO debt ("total debt", "debt/equity ratio", "current ratio", companies_id, "currency") VALUES (%s, %s, %s, %s, %s);
-            ''', (total_debt, debt_equity, current_ratio, companies_id, financials_currency,))
-                    
+        if total_debt and current_ratio == None:
+            pass
         else:
-            cur.execute ('''
-            INSERT INTO debt ("total debt", "debt/equity ratio", "current ratio", "date", companies_id, "currency") VALUES (%s, %s, %s, %s, %s, %s);
-            ''', (total_debt, debt_equity, current_ratio, sheet_date, companies_id, financials_currency,))
+            if sheet_date == '':
+                cur.execute ('''
+                INSERT INTO debt ("total debt", "debt/equity ratio", "current ratio", companies_id, "currency") VALUES (%s, %s, %s, %s, %s);
+                ''', (total_debt, debt_equity, current_ratio, companies_id, financials_currency,))
+                        
+            else:
+                cur.execute ('''
+                INSERT INTO debt ("total debt", "debt/equity ratio", "current ratio", "date", companies_id, "currency") VALUES (%s, %s, %s, %s, %s, %s);
+                ''', (total_debt, debt_equity, current_ratio, sheet_date, companies_id, financials_currency,))
 
         ## save the data in the database
         conn.commit()
 
         ## insert shares
-        if date == '':
-            cur.execute ('''
-            INSERT INTO shares ("ticker", "PE", "EPS", "book value", "exchange", "price", companies_id, "currency") 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
-            ''', (ticker, pe, eps, book_value, exchange, price, companies_id, price_currency,))
+        if eps and book_value == None:
+            pass
         else:
-            cur.execute ('''
-            INSERT INTO shares ("ticker", "PE", "EPS", "book value", "exchange", "price", "date", companies_id, "currency") 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
-            ''', (ticker, pe, eps, book_value, exchange, price, date, companies_id, price_currency,))
+            if date == '':
+                cur.execute ('''
+                INSERT INTO shares ("ticker", "PE", "EPS", "book value", "exchange", "price", companies_id, "currency") 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+                ''', (ticker, pe, eps, book_value, exchange, price, companies_id, price_currency,))
+            else:
+                cur.execute ('''
+                INSERT INTO shares ("ticker", "PE", "EPS", "book value", "exchange", "price", "date", companies_id, "currency") 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+                ''', (ticker, pe, eps, book_value, exchange, price, date, companies_id, price_currency,))
 
         ## save the data in the database
         conn.commit()
 
         ## insert dividends
-        if date == '':
-            cur.execute ('''
-            INSERT INTO dividends ("trailing rate", "forward rate", "trailing yield", "forward yield", "5 year average yield", companies_id) VALUES (%s, %s, %s, %s, %s, %s);
-            ''', (trailing_rate, forward_rate, trailing_yield, forward_yield, average, companies_id,))
-                    
+        if trailing_rate and trailing_yield == None:
+            pass
         else:
-            cur.execute ('''
-            INSERT INTO dividends ("trailing rate", "forward rate", "trailing yield", "forward yield", "5 year average yield", "date", companies_id) VALUES (%s, %s, %s, %s, %s, %s, %s);
-            ''', (trailing_rate, forward_rate, trailing_yield, forward_yield, average, date, companies_id,))
+            if date == '':
+                cur.execute ('''
+                INSERT INTO dividends ("trailing rate", "forward rate", "trailing yield", "forward yield", "5 year average yield", companies_id) VALUES (%s, %s, %s, %s, %s, %s);
+                ''', (trailing_rate, forward_rate, trailing_yield, forward_yield, average, companies_id,))
+                        
+            else:
+                cur.execute ('''
+                INSERT INTO dividends ("trailing rate", "forward rate", "trailing yield", "forward yield", "5 year average yield", "date", companies_id) VALUES (%s, %s, %s, %s, %s, %s, %s);
+                ''', (trailing_rate, forward_rate, trailing_yield, forward_yield, average, date, companies_id,))
 
         ## save the data in the database
         conn.commit()
