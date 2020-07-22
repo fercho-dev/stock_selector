@@ -15,11 +15,12 @@ def main(ticker):
 
 def run_scraper(ticker):
     logger.info('starting scraping process')
-    subprocess.run(['python3.7', 'update_to_sheet.py', ticker], cwd='./scraping_yfinance')
+    subprocess.run(['python', 'update_to_sheet.py', ticker], cwd='./scraping_yfinance')
+    subprocess.run(['rm', '-r', '__pycache__'], cwd='./scraping_yfinance')
 
 def insert_to_db():
     logger.info('starting update process')
-    subprocess.run(['python3.7', 'update_to_db.py'], cwd='./insertion_with_sheets')
+    subprocess.run(['python', 'update_to_db.py'], cwd='./insertion_with_sheets')
 
 
 if __name__ == '__main__':

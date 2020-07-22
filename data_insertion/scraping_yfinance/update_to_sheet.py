@@ -12,10 +12,6 @@ import datetime
 import re
 from scraper import Scraper
 import argparse
-import logging
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 def main(ticker):
     scraper = init_scraper(ticker)
@@ -26,31 +22,31 @@ def main(ticker):
     send_to_sheet(head, stats, financials, ticker)
 
 def init_scraper(ticker):
-    logger.info('generating scraper')
+    print('generating scraper')
     scraper = Scraper(ticker)
     return scraper
 
 def get_header(scraper):
-    logger.info('obtaining header data')
+    print('obtaining header data')
     head = scraper.get_header_data()
     return head
 
 def get_stats(scraper):
-    logger.info('obtaining statistics')
+    print('obtaining statistics')
     stats = scraper.get_statistics_data()
     return stats
     
 def get_financials(scraper):
-    logger.info('obtaining financials')    
+    print('obtaining financials')    
     financials = scraper.get_financials_data()
     return financials
 
 def close(scraper):
-    logger.info('closing scraper')
+    print('closing scraper')
     scraper.close()
 
 def send_to_sheet(head, stats, financials, ticker):
-    logger.info('generating variables to send to the google sheet')
+    print('generating variables to send to the google sheet')
     ## creating the variables
     ## getting company name 
     scope = 'https://www.googleapis.com/auth/spreadsheets.readonly'
@@ -109,7 +105,7 @@ def send_to_sheet(head, stats, financials, ticker):
         info = False
 
     ## conecting and adding values in sheet
-    logger.info('sending data to google sheet')
+    print('sending data to google sheet')
     if info == True:
         scope = 'https://www.googleapis.com/auth/spreadsheets'
 
