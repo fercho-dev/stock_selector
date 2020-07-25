@@ -88,7 +88,7 @@ class Scraper():
             
             ## getting price
             price_box_opt = header.find_all('div')
-            spans = price_box_opt[8].find_all('span')
+            spans = price_box_opt[15].find_all('span')
             price = spans[0].get_text()
             price = price.replace(',','')
             
@@ -126,7 +126,7 @@ class Scraper():
             statistics_button.click()
 
             ## making sure the page loaded
-            time.sleep(5)
+            time.sleep(3)
             #delay = 10
             #page_loaded = WebDriverWait(self.__driver, delay).until(EC.presence_of_element_located((By.XPATH, '//table[@class="W(100%) Bdcl(c)"]')))
 
@@ -267,16 +267,16 @@ class Scraper():
             financials_button.click()
 
             ## making sure the page loaded
-            time.sleep(5)
-            #delay = 10
-            #page_loaded = WebDriverWait(self.__driver, delay).until(EC.presence_of_element_located((By.XPATH, '//section[@data-test="qsp-financial"]//span[text()="Quarterly"]')))
+            #time.sleep(3)
+            delay = 10
+            page_loaded = WebDriverWait(self.__driver, delay).until(EC.presence_of_element_located((By.XPATH, '//section[@data-test="qsp-financial"]//span[text()="Quarterly"]')))
 
             ## going to quaterly data
             quarterly_button = self.__driver.find_element_by_xpath('//section[@data-test="qsp-financial"]//span[text()="Quarterly"]')
             quarterly_button.click()
 
             ## making sure the page loaded
-            time.sleep(3)
+            time.sleep(2)
             #delay = 10
             #page_loaded = WebDriverWait(self.__driver, delay).until(EC.presence_of_element_located((By.XPATH, '//div[@title="Net Income Common Stockholders"]/button')))
 
@@ -329,7 +329,7 @@ class Scraper():
             balance_sheet_button.click()
 
             ## making sure the page loaded
-            time.sleep(5)
+            time.sleep(3)
             #delay = 10
             #page_loaded = WebDriverWait(self.__driver, delay).until(EC.presence_of_element_located((By.XPATH, '//section[@data-test="qsp-financial"]//span[text()="Quarterly"]')))
 
@@ -338,7 +338,7 @@ class Scraper():
             quarterly_button.click()
 
             ## making sure the page loaded
-            time.sleep(3)
+            time.sleep(2)
             #delay = 10
             #page_loaded = WebDriverWait(self.__driver, delay).until(EC.presence_of_element_located((By.XPATH, '//div[@title="Total Assets"]/button')))
 

@@ -137,7 +137,7 @@ def send_to_sheet(head, stats, financials, ticker):
         print(company,"added to updates")
 
     else:
-        print(input_, 'was not updated')
+        print(ticker, 'was not updated')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

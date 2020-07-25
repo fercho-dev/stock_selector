@@ -18,30 +18,41 @@ cur = conn.cursor()
 
 while True:
     ## getting the variables
-    company = input("what company do you want to register:\n").lower()
+    company = input("what company do you want to update:\n").lower()
     ticker = input("ticker:\n").lower()
+
     ## checking if company already exists in database 
     try:
         cur.execute('''
         SELECT "name" FROM companies WHERE "name" = %s''', (company,))
-        duplicate = cur.fetchone()[0]
-        print(company, "is already on the database")
-        continue
-    except TypeError:
+        company = cur.fetchone()[0]
+        print(f"{company} is already on the database")
         pass
+    except TypeError:
+        print(f'{company} is not in the database, maybe you want to add instead of update')
+        continue
+
     try:
         cur.execute('''
         SELECT "ticker", companies_id FROM shares WHERE "ticker" = %s''', (ticker,))
-        info = cur.fetchall()[0]
-        ticker_duplicate = info[0]
-        companies_id = info[1]
+        try:
+            info = cur.fetchall()[0]
+            ticker_duplicate = info[0]
+            companies_id = info[1]
+        except:
+            raise Exception(f'ticker {ticker} is not in the database')
         cur.execute('''
         SELECT "name" FROM companies WHERE id = %s''', (companies_id,))
         company_in_db = cur.fetchone()[0]
-        print(f'\nticker {ticker} is related to company {company_in_db}')
+        if company_in_db == company:
+            print(f'\nticker {ticker} is in fact related to company {company_in_db}\n you can proceed')
+            pass
+        else:
+            raise Exception(f'sorry, {ticker} is not related to {company}')
+    except Exception as e:
+        print(e)
         continue
-    except:
-        pass
+
     try:
         net_income = int(input("net income:\n"))
     except ValueError:

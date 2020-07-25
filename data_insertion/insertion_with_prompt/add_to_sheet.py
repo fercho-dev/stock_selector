@@ -20,6 +20,7 @@ while True:
     ## getting the variables
     company = input("what company do you want to register:\n").lower()
     ticker = input("ticker:\n").lower()
+
     ## checking if company already exists in database 
     try:
         cur.execute('''
@@ -29,6 +30,7 @@ while True:
         continue
     except TypeError:
         pass
+
     try:
         cur.execute('''
         SELECT "ticker", companies_id FROM shares WHERE "ticker" = %s''', (ticker,))
@@ -42,6 +44,7 @@ while True:
         continue
     except:
         pass
+    
     try:
         net_income = int(input("net income:\n"))
     except ValueError:
