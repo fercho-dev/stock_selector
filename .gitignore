@@ -6,3 +6,4 @@ sheets_clear.py
 sheets_read.py
 sheets_write.py
 *.ipynb
+*.csv
